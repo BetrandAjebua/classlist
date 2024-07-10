@@ -52,15 +52,42 @@ async function onSubmit(data) {
 
 // Update Function
 const onUpdateClick=(data)=>{
-setStudentToUpdate(data)
+setStudentToUpdate(data);
 setAddFormDisplay(false)
 setEditFormDisplay(true)
 
 }
+
+const onDeleteClick = (data)=>{
+ let confirm = prompt("Do you want to Delete "+data.name, <input type='checkbox' />)
+ if(confirm==="true"){
+  console.log("Data Deleted")
+ }else{
+  console.log("Data Not Deleted")
+ }
+}
+
 const onUpdate =async(data)=>{
   setEditFormDisplay(false);
   alert("Sending Data...")
-  console.log(data)
+
+    // Posting Data
+
+  try {
+      const response = await fetch('http://localhost:5000/api/students/'+studentToUpdate._id, {
+          method: 'put',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log('Success:', result);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+
  
 }
 
@@ -79,7 +106,7 @@ setEditFormDisplay(false)
  {addFormDisplay && <AddForm onSubmit = {onSubmit} />} 
  {editFormDisplay && <UpdateForm updateStudent={studentToUpdate} onUpdate = {onUpdate}/>} 
 
-      <Students students = {data}  onUpdateClick={onUpdateClick}/>
+      <Students students = {data}  onUpdateClick={onUpdateClick} onDeleteClick = {onDeleteClick}/>
     </div>
   )
 }
