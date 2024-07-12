@@ -3,6 +3,7 @@ import Header from './components/Header'
 import Students from './components/Students'
 import AddForm from './components/AddForm'
 import UpdateForm from './components/UpdateForm'
+import Footer from './components/Footer'
 const App = () => {
   let [data, setData]=useState([])
   let [addFormDisplay, setAddFormDisplay] = useState(true)
@@ -45,6 +46,7 @@ async function onSubmit(data) {
 
       const result = await response.json();
       console.log('Success:', result);
+
   } catch (error) {
       console.error('Error:', error);
   }
@@ -58,12 +60,24 @@ setEditFormDisplay(true)
 
 }
 
-const onDeleteClick = (data)=>{
- let confirm = prompt("Do you want to Delete "+data.name, <input type='checkbox' />)
- if(confirm==="true"){
-  console.log("Data Deleted")
+const onDeleteClick = async(data)=>{
+ let confirm = prompt("Do you want to Delete "+data.name+" With ID: "+data._id, "yes" )
+ if(confirm==="yes"){
+  try {
+    const response = await fetch('http://localhost:5000/api/students/'+data._id, {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json',
+      }
+    });
+
+let rest = await response
+ console.log(rest);
+} catch (error) {
+    console.error('Error:', error);
+}
  }else{
-  console.log("Data Not Deleted")
+  console.log("You Cancel Request")
  }
 }
 
@@ -74,7 +88,7 @@ const onUpdate =async(data)=>{
     // Posting Data
 
   try {
-      const response = await fetch('http://localhost:5000/api/students/'+studentToUpdate._id, {
+      const response = await fetch('http://localhost:5000/api/students/'+data._id, {
           method: 'put',
           headers: {
               'Content-Type': 'application/json',
@@ -82,13 +96,35 @@ const onUpdate =async(data)=>{
           body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      const result = await response.ok;
       console.log('Success:', result);
   } catch (error) {
       console.error('Error:', error);
   }
 
  
+}
+
+
+const onToggle= async(data)=>{
+  try {
+    const response = await fetch('http://localhost:5000/api/students/'+data._id, {
+        method: 'put',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...data,
+          present:!data.present
+
+        }),
+    });
+
+    const result = await response.ok;
+    console.log('Success:', result);
+} catch (error) {
+    console.error('Error:', error);
+}
 }
 
 const onAddForm = ()=>{
@@ -106,9 +142,11 @@ setEditFormDisplay(false)
  {addFormDisplay && <AddForm onSubmit = {onSubmit} />} 
  {editFormDisplay && <UpdateForm updateStudent={studentToUpdate} onUpdate = {onUpdate}/>} 
 
-      <Students students = {data}  onUpdateClick={onUpdateClick} onDeleteClick = {onDeleteClick}/>
+      <Students students = {data}  onUpdateClick={onUpdateClick} onDeleteClick = {onDeleteClick} onToggle = {onToggle}/>
+      <Footer />
     </div>
   )
 }
 
 export default App
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

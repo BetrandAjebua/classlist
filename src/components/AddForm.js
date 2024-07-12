@@ -32,14 +32,27 @@ console.log((student.present))
 
 const submitForm=(e)=>{
 e.preventDefault()
-return(student.name==="" || student.matricule===""|| student.age==="")? 
- alert("Ensure All fills are filled") : //If Fields are False
-onSubmit(student)
+if(student.name==="" || student.matricule===""|| student.age===""){
+  alert("Ensure All fills are filled")
+} else{
+  setStudent({
+    name: "",
+    matricule: "",
+    age: "",
+    present: false
+
+  })
+return onSubmit(student) 
+}
+
+
+
 
 }
    
   return (
     <form className='add-form' onSubmit={submitForm}>
+      <h4 style={{alignContent:"center", textAlign:"center"}}>Add Student</h4>
       <div className='form-control'>
         <label>First Name</label>
         <input name="name" className='form-input' value={student.fullname}
@@ -48,7 +61,7 @@ onSubmit(student)
       </div>
 
       <div className='form-control'>
-        <label>Matricle</label>
+        <label>Matricle</label>        
         <input name="matricule" className='form-input' value={student.matricule}
           placeholder='Enter Student Matricule' onChange={(e) => handleInput(e)}
         />
@@ -68,7 +81,7 @@ onSubmit(student)
           />
       </div>
      <div className='form-control'>
-        <button className='btn btn-block' style={{backgroundColor:"rgb(6, 169, 233)"}} type='submit'>Submit</button>
+        <button className='btn btn-block'  type='submit'>Submit</button>
      </div>
     </form>
   )

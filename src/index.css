@@ -56,14 +56,15 @@ body {
 }
 
 .students {
-  background: #f4f4f4;
+  background: #028891;
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
 }
 
-.students.reminder {
-  border-left: 5px solid green;
+.students .reminder {
+  border-left: 3px solid rgb(23, 106, 122);
+  padding-left: 1rem;
 }
 
 .students h3 {

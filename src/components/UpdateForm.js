@@ -46,6 +46,8 @@ onUpdate(student)
    
   return (
     <form className='add-form' onSubmit={submitForm}>
+      <h4 style={{alignContent:"center", textAlign:"center", color:"#028891" , fontWeight:"bold"}}>Update Student</h4>
+
       <div className='form-control'>
         <label>Full Name</label>
         <input name="name" className='form-input' value={student.name}
